@@ -1,0 +1,43 @@
+class Solution(object):
+    
+    def isPalin(self, subStr, k):
+        if k >= 13:
+            return True
+        newStr = ''
+        strDic = collections.defaultdict(int)
+        for char in subStr:
+            strDic[char] += 1
+        for key in strDic.keys():
+            if strDic[key] % 2 == 1:
+                newStr += key
+        # get mid index
+        mid = len(newStr) // 2
+        left, right = mid-1,mid
+        # odd length
+        if len(newStr) %2 == 1:
+            right = mid + 1
+        while left >=0 and right <len(newStr):
+            if newStr[left] != newStr[right]:
+                if k <=0:
+                    return False
+                else:
+                    k -= 1
+            left -= 1
+            right += 1   
+        return True
+            
+      
+    def canMakePaliQueries(self, s, queries):
+        """
+        :type s: str
+        :type queries: List[List[int]]
+        :rtype: List[bool]
+        """
+        result = []
+        for query in queries:
+            subStr = s[query[0]:query[1]+1]
+            k = query[2]
+            result.append(self.isPalin(subStr,k))
+        return result
+            
+        
