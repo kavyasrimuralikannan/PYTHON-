@@ -1,0 +1,76 @@
+from copy import deepcopy
+
+class Solution(object):
+    def longestIncreasingPath(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: int
+        """
+        
+        # left right up or down moves only
+        
+        # matrix is m x n
+        # m, n [1, 200]
+        # values are [0, 2^31-1]
+        
+        # Each cell has its own max path.
+        # Cycles won't happen bc paths must be increasing.
+        
+        # use recursion while storing previously visited info
+        
+        self.matrix = matrix
+        
+        self.n = len(matrix)
+        self.m = len(matrix[0])
+                
+        self.max_paths = [None] * (self.m * self.n)
+        
+        for i in range(self.n):
+            for j in range(self.m):
+                self.calc_maxpath(i, j)
+                    
+        return max(self.max_paths)
+    
+                
+    def calc_maxpath(self, i, j):
+        
+        pre_calc = self.max_paths[i * self.m + j]
+        if pre_calc:
+            return pre_calc
+        
+        current = self.matrix[i][j]
+        
+        # up
+        if i > 0 and self.matrix[i-1][j] > current:
+            path_up = self.calc_maxpath(i-1, j)
+        else:
+            path_up = 0
+        
+        # down
+        if i < self.n-1 and self.matrix[i+1][j] > current:
+            path_dn = self.calc_maxpath(i+1, j)
+        else:
+            path_dn = 0
+        
+
+        if j > 0 and self.matrix[i][j-1] > current:
+            path_rt = self.calc_maxpath(i, j-1)
+        else:
+            path_rt = 0
+
+        if j < self.m-1 and self.matrix[i][j+1] > current:
+            path_lf = self.calc_maxpath(i, j+1)
+        else:
+            path_lf = 0
+            
+        output = 1 + max([path_up, path_dn, path_rt, path_lf])
+        
+        self.max_paths[i * self.m + j] = output
+        
+        return output
+        
+        
+        
+        
+        
+        
