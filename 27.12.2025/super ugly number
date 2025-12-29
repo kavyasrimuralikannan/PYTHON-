@@ -1,0 +1,20 @@
+class Solution(object):
+    def nthSuperUglyNumber(self, n, primes):
+        """
+        :type n: int
+        :type primes: List[int]
+        :rtype: int
+        """
+        pcnt = len(primes)
+        uglies = [0]*n
+        uglies[0] = 1
+        divs = [0] * pcnt
+        for i in range(1, n):
+            uglies[i] = primes[0] * uglies[divs[0]]
+            for k in range(1, pcnt):
+                new = primes[k] * uglies[divs[k]]
+                if uglies[i] > new:
+                    uglies[i] = new
+            for j in range(pcnt):
+                divs[j] += uglies[i] == uglies[divs[j]] * primes[j]
+        return uglies[-1]
