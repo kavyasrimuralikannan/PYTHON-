@@ -1,0 +1,18 @@
+class Solution(object):
+    def maxCoins(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        n = len(nums)
+        balloons = [1] + nums + [1]  # Add 1 at both ends
+        dp = [[0] * (n + 2) for _ in range(n + 2)]  # DP table
+
+        for length in range(1, n + 1):  # length of the subarray
+            for left in range(1, n - length + 2):  # left boundary
+                right = left + length - 1  # right boundary
+                for i in range(left, right + 1):  # last balloon to burst
+                    dp[left][right] = max(dp[left][right], 
+                        dp[left][i - 1] + dp[i + 1][right] + balloons[left - 1] * balloons[i] * balloons[right + 1])
+
+        return dp[1][n]  # The maximum coins that can be collected
