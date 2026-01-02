@@ -1,0 +1,30 @@
+class Solution:
+    def manacherOdd(self, s):
+        radii = [0] * len(s)
+        c = r = 0
+        for center in range(len(s)):
+            if center < r:
+                mirror = 2 * c - center
+                radii[center] = min(r - center, radii[mirror])
+            
+            while (center + radii[center] + 1 < len(s) and
+                   center - radii[center] - 1 >= 0 and
+                   s[center + radii[center] + 1] == s[center - radii[center] - 1]):
+                radii[center] += 1
+            
+            if center + radii[center] > r:
+                c = center
+                r = center + radii[center]
+        
+        return radii
+    
+    def countSubstrings(self, s):
+        transformed = "#".join([""] + list(s) + [""])
+        
+        radii = self.manacherOdd(transformed)
+        
+        count = 0
+        for radius in radii:
+            count += (radius + 1) // 2
+        
+        return count
