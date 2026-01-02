@@ -1,0 +1,14 @@
+class Solution(object):
+    def toLowerCase(self, s, method="builtin"):
+      
+        if method == "builtin":
+            return s.lower()
+
+        # Approach 2: Manual ASCII conversion
+        result = ""
+        for c in s:
+            if 'A' <= c <= 'Z':
+                result += chr(ord(c) + 32)
+            else:
+                result += c
+        return result
