@@ -1,0 +1,16 @@
+class Solution(object):
+    def toGoatLatin(self, sentence):
+        """
+        :type sentence: str
+        :rtype: str
+        """
+        finalstr = ""
+        a = sentence.split()
+        for i in range(len(a)):
+            if a[i][0] in 'aeiouAEIOU':
+                finalstr += a[i] + "ma" +"a"* (i + 1) + " "
+
+            else:
+                finalstr += a[i][1:] + a[i][0] + "ma" + "a" * (i + 1) + " "
+
+        return finalstr.strip()
