@@ -1,0 +1,39 @@
+class Solution(object):
+    def pyramidTransition(self, bottom, allowed):
+        def constructLookupTable(allowed):
+            mp = {}
+            for s in allowed:
+                pair = s[0] + s[1]
+                top = s[2]
+                if pair not in mp:
+                    mp[pair] = []
+                mp[pair].append(top)
+            return mp
+        def buildNextRows(bottom,mp):
+            nextRows = []
+            def backTrack(index,pathString):
+                if index == len(bottom)-1:
+                    nextRows.append(pathString)
+                    return
+                pair = bottom[index]+bottom[index+1]
+                if pair not in mp.keys():
+                    return
+                for top in mp[pair]:
+                    backTrack(index+1,pathString+top)
+            backTrack(0,"")
+            return nextRows
+        def canBuild(bottom,mp,memo):
+            if len(bottom) ==1:
+                return True
+            if bottom in memo:
+                return memo[bottom]
+            possibleNextRows = buildNextRows(bottom,mp)
+            for nextRow in possibleNextRows:
+                if canBuild(nextRow,mp,memo):
+                    memo[bottom]= True
+                    return True
+            memo[bottom]= False
+            return False
+
+        mp = constructLookupTable(allowed)
+        return canBuild(bottom,mp,memo = {})
