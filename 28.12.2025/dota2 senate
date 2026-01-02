@@ -1,0 +1,37 @@
+class Solution(object):
+    def predictPartyVictory(self, senate):
+        """
+        :type senate: str
+        :rtype: str
+        """
+        i = 0
+        r = 0
+        d = 0
+        senate = list(senate)
+        dict_a = Counter(senate)
+        if not 'D' in dict_a:
+            return 'Radiant'
+        elif not 'R' in dict_a:
+            return 'Dire'
+        while (not 0 in dict_a.values()):
+            if senate[i] == 'D':
+                if r == 0:
+                    d += 1
+                else:
+                    senate[i] = 0
+                    dict_a['D'] -= 1
+                    r -= 1
+            elif senate[i] == 'R':
+                if d == 0:
+                    r += 1
+                else:
+                    senate[i] = 0
+                    dict_a['R'] -= 1
+                    d -= 1
+            i += 1
+            if i == len(senate):
+                i = 0
+        if dict_a['R'] == 0:
+            return 'Dire'
+        else:
+            return 'Radiant'
