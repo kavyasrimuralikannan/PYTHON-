@@ -1,0 +1,13 @@
+class Solution:
+    def peakIndexInMountainArray(self, arr):
+        s, e = 0, len(arr) - 1
+
+        while s < e:
+            mid = s + (e - s) // 2
+
+            if arr[mid] > arr[mid + 1]:
+                e = mid  # move left
+            else:
+                s = mid + 1  # move right
+
+        return s
