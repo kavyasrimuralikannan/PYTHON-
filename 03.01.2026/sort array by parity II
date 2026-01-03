@@ -1,0 +1,15 @@
+class Solution:
+    def sortArrayByParityII(self, nums):
+        n = len(nums)
+        temp = [0] * n
+        even, odd = 0, 1
+
+        for x in nums:
+            if x % 2 == 0:
+                temp[even] = x
+                even += 2
+            else:
+                temp[odd] = x
+                odd += 2
+
+        return temp
