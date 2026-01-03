@@ -1,0 +1,19 @@
+class Solution(object):
+    def partitionDisjoint(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        mi=nums[0]
+        mx=nums[0]
+        index=1
+        for i in range(len(nums)-1):
+            if(nums[i]<mi):
+                index=i+1
+                mi=mx
+            i=i+1
+            mx=max(mx,nums[i])
+        return index
+
+           
+        
