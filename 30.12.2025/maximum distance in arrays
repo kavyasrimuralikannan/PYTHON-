@@ -1,0 +1,31 @@
+
+class Solution(object):
+    def maxDistance(self, arrays):
+        """
+        :type arrays: List[List[int]]
+        :rtype: int
+        """
+        minl = {}
+        maxl = {}
+        for i in range(len(arrays)):
+            minl[i] = arrays[i][0]
+            maxl[i] = arrays[i][-1]
+
+        maxkey = max(maxl, key=maxl.get)
+        minkey = min(minl, key=minl.get)
+        
+        if maxkey != minkey:
+            return maxl[maxkey] - minl[minkey]
+        else:
+            max1 = maxl[maxkey]
+            min1 = minl[minkey]
+            del maxl[maxkey]
+            del minl[minkey]
+            if maxl and minl:  
+                maxkey1 = max(maxl, key=maxl.get)
+                minkey1 = min(minl, key=minl.get)
+                max2 = maxl[maxkey1]
+                min2 = minl[minkey1]
+                return max((max1 - min2), (max2 - min1))
+            else:
+                return 0 
