@@ -1,0 +1,9 @@
+class Solution(object):
+    def maxChunksToSorted(self, arr):
+        no_of_chunk = 0
+        max_val=arr[0] 
+        for i in range(len(arr)):
+            max_val=max(arr[i],max_val)
+            if max_val == i: 
+                no_of_chunk += 1
+        return no_of_chunk
