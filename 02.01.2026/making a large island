@@ -1,0 +1,48 @@
+class Solution:
+    def largestIsland(self, grid):
+        n = len(grid)
+        dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]  # Directions for 4-directional movement
+        island_sizes = defaultdict(int)  # Maps island ID to its size
+        island_id = 2  # Start assigning island IDs from 2 (since 0 and 1 are already used)
+        max_size = 0  # Track the maximum island size
+
+        # DFS to assign island IDs and calculate sizes
+        def dfs(i, j, id):
+            if i < 0 or i >= n or j < 0 or j >= n or grid[i][j] != 1:
+                return 0  # Base case: out of bounds or not part of the current island
+            grid[i][j] = id  # Assign the island ID
+            size = 1  # Start counting the size of the island
+            for dx, dy in dirs:
+                size += dfs(i + dx, j + dy, id)  # Recursively visit all 4-directional neighbors
+            return size
+
+        # Step 1: Assign IDs to islands and calculate their sizes
+        for i in range(n):
+            for j in range(n):
+                if grid[i][j] == 1:
+                    size = dfs(i, j, island_id)  # DFS to calculate island size
+                    island_sizes[island_id] = size  # Store the size of the island
+                    max_size = max(max_size, size)  # Update the maximum island size
+                    island_id += 1  # Increment island ID
+
+        # Step 2: Check each 0 for potential island expansion
+        for i in range(n):
+            for j in range(n):
+                if grid[i][j] == 0:
+                    neighbors = set()  # Track unique neighboring islands
+                    current_size = 1  # Start with the current cell being flipped to 1
+
+                    # Check all 4-directional neighbors
+                    for dx, dy in dirs:
+                        ni, nj = i + dx, j + dy
+                        if 0 <= ni < n and 0 <= nj < n and grid[ni][nj] > 1:
+                            neighbor_id = grid[ni][nj]  # Get the island ID
+                            if neighbor_id not in neighbors:  # Avoid counting the same island twice
+                                current_size += island_sizes[neighbor_id]  # Add the size of the neighboring island
+                                neighbors.add(neighbor_id)  # Mark this island as seen
+
+                    # Update the maximum island size
+                    max_size = max(max_size, current_size)
+
+        # If no 0s are present, the entire grid is one island
+        return max_size if max_size != 0 else n * n
